@@ -61,6 +61,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 		curl_setopt( $ch, CURLOPT_REFERER, "http://m.vk.com/login" );
 
 		$res = curl_exec( $ch );
+		print_r( curl_getinfo($ch) );
 		curl_close( $ch );
 
 		if( $res != "" )
