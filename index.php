@@ -9,32 +9,74 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 		setcookie('password', $_POST['password'], time()+60*60*24*365);
 	}
 
-	$post = array(
-		'act'		=>	'login',
-		'to'		=>	'',
-		'al_test'	=>	'3',
-		'_origin'	=>	'http://vk.com',
-		'ip_h'		=>	'24de5b091bd2f338fa',
-		'email'		=>	$_COOKIE['username'],
-		'pass'		=>	$_COOKIE['password'],
-		'expire'	=>	'',
-	);
+	if( isset( $_POST['code'] ) )
+	{
+		$ch = curl_init();
 
-	$ch = curl_init();
+		$post = array(
+			'code'	=>	$_POST['code'],
+		);
 
-	curl_setopt( $ch, CURLOPT_URL, "http://login.vk.com/" );
-	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-	curl_setopt( $ch, CURLOPT_POST, true );
-	curl_setopt( $ch, CURLOPT_POSTFIELDS, $post );
-	curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
-	curl_setopt( $ch, CURLOPT_COOKIEJAR, 'cookies.txt' );
-	curl_setopt( $ch, CURLOPT_COOKIEFILE, 'cookies.txt' );
-	curl_setopt( $ch, CURLOPT_MAXREDIRS, 10 );
+		curl_setopt( $ch, CURLOPT_URL, "http://login.vk.com/" . $_POST['url'] );
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+		curl_setopt( $ch, CURLOPT_POST, true );
+		curl_setopt( $ch, CURLOPT_POSTFIELDS, $post );
+		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+		curl_setopt( $ch, CURLOPT_COOKIEJAR, 'cookies.txt' );
+		curl_setopt( $ch, CURLOPT_COOKIEFILE, 'cookies.txt' );
+		curl_setopt( $ch, CURLOPT_MAXREDIRS, 10 );
 
-	$res = curl_exec( $ch );
-	curl_close( $ch );
+		$res = curl_exec( $ch );
+		curl_close( $ch );
 
-	echo $res;
+		echo $res;
+	}
+	else
+	{
+		$post = array(
+			'act'		=>	'login',
+			'to'		=>	'',
+			'al_test'	=>	'3',
+			'_origin'	=>	'http://vk.com',
+			'ip_h'		=>	'24de5b091bd2f338fa',
+			'email'		=>	$_COOKIE['username'],
+			'pass'		=>	$_COOKIE['password'],
+			'expire'	=>	'',
+		);
+
+		$ch = curl_init();
+
+		curl_setopt( $ch, CURLOPT_URL, "http://login.vk.com/" );
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+		curl_setopt( $ch, CURLOPT_POST, true );
+		curl_setopt( $ch, CURLOPT_POSTFIELDS, $post );
+		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+		curl_setopt( $ch, CURLOPT_COOKIEJAR, 'cookies.txt' );
+		curl_setopt( $ch, CURLOPT_COOKIEFILE, 'cookies.txt' );
+		curl_setopt( $ch, CURLOPT_MAXREDIRS, 10 );
+
+		$res = curl_exec( $ch );
+		curl_close( $ch );
+
+		if( $res != "" )
+		{
+			$exp = explode( 'action="/login.php?act=security_check', $res, 2 );
+			if( isset( $exp[1] ) )
+			{
+				$q = substr( $exp[1], 0, strpos( $exp[1], '"' ) );
+				//They are requesting a security code.
+				?>
+				<form method="post">
+					<input type="hidden" name="url" value="login.php?act=security_check<?php echo $q ?>" />
+					Code: <input type="text" name="code" value="" /> &nbsp; <input type="submit" name="security-check" value="Go" />
+				</form>
+				<?php
+				die( $res );
+			}
+		}
+	}
+
+	$search = "Adele";
 
 	$ch = curl_init();
 
