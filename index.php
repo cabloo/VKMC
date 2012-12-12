@@ -29,8 +29,6 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 
 		$res = curl_exec( $ch );
 		curl_close( $ch );
-
-		echo "https://login.vk.com/" . $_POST['url'] . "\n" . $res;
 	}
 	else
 	{
@@ -98,7 +96,12 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 	$res = curl_exec( $ch );
 	curl_close( $ch );
 
-	echo "http://m.vk.com/audio?act=search&q=" . urlencode( $search ) . ": " . $res;
+	$exp = explode( '<input type="hidden" value="http://', $res );
+	unset( $exp[0] );
+	foreach( $exp as $key => $value )
+	{
+		echo strstr( $value, '"', true );
+	}
 }
 else
 {
