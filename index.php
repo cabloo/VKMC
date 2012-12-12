@@ -17,7 +17,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 			'code'	=>	$_POST['code'],
 		);
 
-		curl_setopt( $ch, CURLOPT_URL, "https://login.vk.com/" . $_POST['url'] );
+		curl_setopt( $ch, CURLOPT_URL, "http://m.vk.com/" . $_POST['url'] );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 		curl_setopt( $ch, CURLOPT_POST, true );
 		curl_setopt( $ch, CURLOPT_POSTFIELDS, $post );
