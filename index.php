@@ -72,6 +72,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 				//They are requesting a security code.
 				?>
 				<form method="post">
+					<input type="hidden" name="referer" value="<?php echo curl_getinfo( $ch, CURLINFO_EFFECTIVE_URL ) ?>" />
 					<input type="hidden" name="url" value="login.php?act=security_check<?php echo $q ?>" />
 					Code: <input type="text" name="code" value="" /> &nbsp; <input type="submit" name="security-check" value="Go" />
 				</form>
