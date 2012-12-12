@@ -25,6 +25,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 		curl_setopt( $ch, CURLOPT_COOKIEJAR, 'cookies.txt' );
 		curl_setopt( $ch, CURLOPT_COOKIEFILE, 'cookies.txt' );
 		curl_setopt( $ch, CURLOPT_MAXREDIRS, 10 );
+		curl_setopt( $ch, CURLOPT_REFERER, $_POST['referer'] );
 
 		$res = curl_exec( $ch );
 		curl_close( $ch );
@@ -61,7 +62,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 		curl_setopt( $ch, CURLOPT_REFERER, "http://m.vk.com/login" );
 
 		$res = curl_exec( $ch );
-		print_r( curl_getinfo($ch) );
+		$info = curl_getinfo( $ch );
 		curl_close( $ch );
 
 		if( $res != "" )
@@ -73,7 +74,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 				//They are requesting a security code.
 				?>
 				<form method="post">
-					<input type="hidden" name="referer" value="<?php echo curl_getinfo( $ch, CURLINFO_EFFECTIVE_URL ) ?>" />
+					<input type="hidden" name="referer" value="<?php echo $info['url'] ?>" />
 					<input type="hidden" name="url" value="login.php?act=security_check<?php echo $q ?>" />
 					Code: <input type="text" name="code" value="" /> &nbsp; <input type="submit" name="security-check" value="Go" />
 				</form>
