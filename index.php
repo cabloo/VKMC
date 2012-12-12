@@ -1,4 +1,5 @@
 <?php
+define( 'AGENT', "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1309.0 Safari/537.17" );
 if( !function_exists( 'curl_setopt' ) ) die( 'CURL required.' );
 
 if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
@@ -17,7 +18,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 			'code'	=>	$_POST['code'],
 		);
 
-		curl_setopt( $ch, CURLOPT_URL, "http://login.vk.com/" . $_POST['url'] );
+		curl_setopt( $ch, CURLOPT_URL, "https://login.vk.com/" . $_POST['url'] );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 		curl_setopt( $ch, CURLOPT_POST, true );
 		curl_setopt( $ch, CURLOPT_POSTFIELDS, $post );
@@ -34,19 +35,13 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 	else
 	{
 		$post = array(
-			'act'		=>	'login',
-			'to'		=>	'',
-			'al_test'	=>	'3',
-			'_origin'	=>	'http://vk.com',
-			'ip_h'		=>	'24de5b091bd2f338fa',
 			'email'		=>	$_COOKIE['username'],
 			'pass'		=>	$_COOKIE['password'],
-			'expire'	=>	'',
 		);
 
 		$ch = curl_init();
 
-		curl_setopt( $ch, CURLOPT_URL, "http://login.vk.com/" );
+		curl_setopt( $ch, CURLOPT_URL, "https://login.vk.com/?act=login&_origin=http://m.vk.com&ip_h=62d73c776ad943781d&role=pda&utf8=1" );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 		curl_setopt( $ch, CURLOPT_POST, true );
 		curl_setopt( $ch, CURLOPT_POSTFIELDS, $post );
@@ -80,7 +75,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 
 	$ch = curl_init();
 
-	curl_setopt( $ch, CURLOPT_URL, "http://vk.com/search?c[section]=audio&c[q]=" . urlencode( $search ) );
+	curl_setopt( $ch, CURLOPT_URL, "http://m.vk.com/audio?act=search&q=" . urlencode( $search ) );
 	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 	curl_setopt( $ch, CURLOPT_COOKIEJAR, 'cookies.txt' );
 	curl_setopt( $ch, CURLOPT_COOKIEFILE, 'cookies.txt' );
