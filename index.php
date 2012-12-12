@@ -65,6 +65,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 
 		if( $res != "" )
 		{
+			echo $res;
 			$exp = explode( 'action="/login.php?act=security_check', $res, 2 );
 			if( isset( $exp[1] ) )
 			{
