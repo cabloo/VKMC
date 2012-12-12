@@ -1,5 +1,4 @@
 <?php
-define( 'AGENT', "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1309.0 Safari/537.17" );
 if( !function_exists( 'curl_setopt' ) ) die( 'CURL required.' );
 
 if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
@@ -30,7 +29,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 		$res = curl_exec( $ch );
 		curl_close( $ch );
 
-		echo $res;
+		echo "https://login.vk.com/" . $_POST['url'] . "\n" . $res;
 	}
 	else
 	{
@@ -41,7 +40,17 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 
 		$ch = curl_init();
 
-		curl_setopt( $ch, CURLOPT_URL, "https://login.vk.com/?act=login&_origin=http://m.vk.com&ip_h=62d73c776ad943781d&role=pda&utf8=1" );
+		curl_setopt( $ch, CURLOPT_URL, "http://m.vk.com/login" );
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+		curl_setopt( $ch, CURLOPT_MAXREDIRS, 10 );
+
+		$res = curl_exec( $ch );
+		curl_close( $ch );
+
+		$ch = curl_init();
+
+		curl_setopt( $ch, CURLOPT_URL, strstr( substr( strstr( $res, 'action="' ), 8 ), '"', true ) );
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 		curl_setopt( $ch, CURLOPT_POST, true );
 		curl_setopt( $ch, CURLOPT_POSTFIELDS, $post );
@@ -49,6 +58,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 		curl_setopt( $ch, CURLOPT_COOKIEJAR, 'cookies.txt' );
 		curl_setopt( $ch, CURLOPT_COOKIEFILE, 'cookies.txt' );
 		curl_setopt( $ch, CURLOPT_MAXREDIRS, 10 );
+		curl_setopt( $ch, CURLOPT_REFERER, "http://m.vk.com/login" );
 
 		$res = curl_exec( $ch );
 		curl_close( $ch );
