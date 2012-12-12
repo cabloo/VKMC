@@ -87,13 +87,15 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 
 	curl_setopt( $ch, CURLOPT_URL, "http://m.vk.com/audio?act=search&q=" . urlencode( $search ) );
 	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+	curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+	curl_setopt( $ch, CURLOPT_MAXREDIRS, 10 );
 	curl_setopt( $ch, CURLOPT_COOKIEJAR, 'cookies.txt' );
 	curl_setopt( $ch, CURLOPT_COOKIEFILE, 'cookies.txt' );
 
 	$res = curl_exec( $ch );
 	curl_close( $ch );
 
-	echo $res;
+	echo "http://m.vk.com/audio?act=search&q=" . urlencode( $search ) . ": " . $res;
 }
 else
 {
