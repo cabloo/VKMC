@@ -10,8 +10,8 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 	}
 
 	$post = array(
-		'act'	=>	'login',
-		'to'	=>	'',
+		'act'		=>	'login',
+		'to'		=>	'',
 		'al_test'	=>	'3',
 		'_origin'	=>	'http://vk.com',
 		'ip_h'		=>	'24de5b091bd2f338fa',
@@ -33,9 +33,20 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 	$res = curl_exec( $ch );
 	curl_close( $ch );
 
-	die( $res );
+	echo $res;
 
-	//http://vk.com/search?c[section]=audio&c[q]=
+	$ch = curl_init();
+
+	curl_setopt( $ch, CURLOPT_URL, "http://vk.com/search?c[section]=audio&c[q]=" . urlencode( $search ) );
+	curl_setopt( $ch, CURLOPT_HEADER, 0 );
+	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt( $ch, CURLOPT_COOKIEJAR, 'cookies.txt' );
+	curl_setopt( $ch, CURLOPT_COOKIEFILE, 'cookies.txt' );
+
+	$res = curl_exec( $ch );
+	curl_close( $ch );
+
+	echo $res;
 }
 else
 {
