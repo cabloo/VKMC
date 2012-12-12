@@ -23,12 +23,13 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 	$ch = curl_init();
 
 	curl_setopt( $ch, CURLOPT_URL, "http://login.vk.com/" );
-	curl_setopt( $ch, CURLOPT_HEADER, 0 );
-	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-	curl_setopt( $ch, CURLOPT_POST, count( $post ) );
+	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+	curl_setopt( $ch, CURLOPT_POST, true );
 	curl_setopt( $ch, CURLOPT_POSTFIELDS, $post );
+	curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
 	curl_setopt( $ch, CURLOPT_COOKIEJAR, 'cookies.txt' );
 	curl_setopt( $ch, CURLOPT_COOKIEFILE, 'cookies.txt' );
+	curl_setopt( $ch, CURLOPT_MAXREDIRS, 10 );
 
 	$res = curl_exec( $ch );
 	curl_close( $ch );
@@ -38,8 +39,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 	$ch = curl_init();
 
 	curl_setopt( $ch, CURLOPT_URL, "http://vk.com/search?c[section]=audio&c[q]=" . urlencode( $search ) );
-	curl_setopt( $ch, CURLOPT_HEADER, 0 );
-	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 	curl_setopt( $ch, CURLOPT_COOKIEJAR, 'cookies.txt' );
 	curl_setopt( $ch, CURLOPT_COOKIEFILE, 'cookies.txt' );
 
