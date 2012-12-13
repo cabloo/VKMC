@@ -27,7 +27,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 		curl_setopt( $ch, CURLOPT_MAXREDIRS, 10 );
 		curl_setopt( $ch, CURLOPT_REFERER, $_POST['referer'] );
 
-		$res = curl_exec( $ch );
+		curl_exec( $ch );
 		curl_close( $ch );
 	}
 	else
@@ -96,7 +96,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 	$res = curl_exec( $ch );
 	curl_close( $ch );
 
-	$end = str_replace( "\n", "", strstr( strstr( $res, '<div class="audios_wrap audios_list">' ), '<div class="show_more_wrap">', true ) );
+	$end = str_replace( "\n", "", strstr( strstr( $res, '<div class="audios_wrap audios_list"' ), '<div class="show_more_wrap">', true ) );
 	$songs = array(  );
 	$check_br = true;
 	function add_song( $matches )
