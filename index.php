@@ -191,7 +191,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 							<?php echo $song['bitrate'] ?>
 						</td>
 						<td>
-							<a href="download.php?url=<?php echo $song['url'] ?>">download</a>
+							<a href="download.php?url=<?php echo $song['url'] ?>&title=<?php echo preg_replace( "/[^A-Za-z0-9]/", '', $song['title'] ) ?>">download</a>
 						</td>
 					</tr>
 				<?php

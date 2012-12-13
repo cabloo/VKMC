@@ -1,4 +1,8 @@
 <?php
+header('Content-Type: audio/mpeg');
+header('Content-Disposition: inline;filename="' . $_GET['title'] . '"');
+header('Cache-Control: no-cache');
+header('Content-Transfer-Encoding: chunked');
 $ch = curl_init();
 
 curl_setopt( $ch, CURLOPT_URL, $_GET['url'] );
