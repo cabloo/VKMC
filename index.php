@@ -185,10 +185,10 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 							<?php echo $song['artist'] ?>
 						</td>
 						<td>
-							<?php echo $song['dur'] ?>kbps
+							<?php echo $song['dur'] ?>
 						</td>
 						<td>
-							<?php echo $song['bitrate'] ?>
+							<?php echo $song['bitrate'] ?>kbps
 						</td>
 						<td>
 							<a href="download.php?url=<?php echo $song['url'] ?>&title=<?php echo preg_replace( "/[^A-Za-z0-9]/", '', $song['title'] ) ?>">download</a>
