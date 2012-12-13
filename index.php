@@ -1,5 +1,16 @@
 <?php
 
+function map_bitrate( $rate )
+{
+	$rates = array( 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160, 192, 224, 256, 320 );
+	foreach( $rates as $r )
+	{
+		if( ($rate * 0.9) < $r && ($rate * 1.1) > $r )
+			return $r;
+	}
+	return $rate;
+}
+
 function do_login(){
 	$post = array(
 		'email'		=>	$_COOKIE['username'],
@@ -130,7 +141,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 				$result = curl_exec( $ch );
 				curl_close( $ch );
 				preg_match( '/Content-Length: (\d+)/', $result, $m );
-				$song['bitrate'] = $m[1];
+				$song['bitrate'] = ( $m[1] / 8000 ) / ( (int)$matches[1] * 60 + (int)$matches[2] );
 			}
 
 			$songs[] = $song;
@@ -141,6 +152,53 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 		<form method="get" action="index.php">
 			Search: <input type="text" name="search" value="<?php echo htmlspecialchars( $search ) ?>" /> &nbsp; <input type="submit" value="Search" />
 		</form>
+		<table width="100%">
+			<thead>
+				<tr>
+					<th>
+						Title
+					</th>
+					<th>
+						Artist
+					</th>
+					<th>
+						Duration
+					</th>
+					<th>
+						Bitrate
+					</th>
+					<th>
+						Download
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				foreach( $songs as $song )
+				{
+				?>
+					<tr>
+						<td>
+							<?php echo $song['title'] ?>
+						</td>
+						<td>
+							<?php echo $song['artist'] ?>
+						</td>
+						<td>
+							<?php echo $song['dur'] ?>
+						</td>
+						<td>
+							<?php echo $song['bitrate'] ?>
+						</td>
+						<td>
+							<a href="<?php echo $song['url'] ?>">download</a>
+						</td>
+					</tr>
+				<?php
+				}
+				?>
+			</tbody>
+		</table>
 		<?php
 		print_r( $songs );
 	}
