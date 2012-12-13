@@ -141,7 +141,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 				$result = curl_exec( $ch );
 				curl_close( $ch );
 				preg_match( '/Content-Length: (\d+)/', $result, $m );
-				$song['bitrate'] = ( 8 * $m[1] / 1000 ) / ( (int)$matches[1] * 60 + (int)$matches[2] );
+				$song['bitrate'] = map_bitrate( ( 8 * $m[1] / 1000 ) / ( (int)$matches[1] * 60 + (int)$matches[2] ) );
 			}
 
 			$songs[] = $song;
