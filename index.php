@@ -65,7 +65,6 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 
 		if( $res != "" )
 		{
-			echo $res;
 			$exp = explode( 'action="/login.php?act=security_check', $res, 2 );
 			if( isset( $exp[1] ) )
 			{
@@ -97,12 +96,39 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 	$res = curl_exec( $ch );
 	curl_close( $ch );
 
-	$exp = explode( '<input type="hidden" value="http://', $res );
-	unset( $exp[0] );
-	foreach( $exp as $key => $value )
+	$end = str_replace( "\n", "", strstr( strstr( $res, '<div class="audios_wrap audios_list">' ), '<div class="show_more_wrap">', true ) );
+	$songs = array(  );
+	$check_br = true;
+	function add_song( $matches )
 	{
-		echo strstr( $value, '"', true );
+		global $songs, $check_br;
+		if( !$matches[8] ) return;
+
+		$song = array(
+			'title'	=>	$matches[6],
+			'artist'=>	$matches[4],
+			'dur'	=>	$matches[1] . ':' . $matches[2],
+			'url'	=>	$matches[8],
+		);
+
+		if( $check_br )
+		{
+			$ch = curl_init( $matches[8] );
+			curl_setopt( $ch, CURLOPT_NOBODY, true );
+			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+			curl_setopt( $ch, CURLOPT_HEADER, true );
+			$result = curl_exec( $ch );
+			curl_close( $ch );
+			preg_match( '/Content-Length: (\d+)/', $result, $m );
+			$song['bitrate'] = $m[1];
+		}
+
+		$songs[] = $song;
 	}
+
+	preg_replace_callback( '#<span>([0-9]{1,2}):([0-9]{1,2})<\/span>(.*)<span class="artist">(.*)</span>(.*)<span class="title">(.*)</span>(.*)<input type="hidden" value="(.*)">#U', 'add_song', $end );
+
+	print_r( $songs );
 }
 else
 {
