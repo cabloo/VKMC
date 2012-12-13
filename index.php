@@ -185,7 +185,7 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 							<?php echo $song['artist'] ?>
 						</td>
 						<td>
-							<?php echo $song['dur'] ?>
+							<?php echo $song['dur'] ?>kbps
 						</td>
 						<td>
 							<?php echo $song['bitrate'] ?>
@@ -200,7 +200,6 @@ if( isset( $_COOKIE['username'] ) || isset( $_POST['username'] ) )
 			</tbody>
 		</table>
 		<?php
-		print_r( $songs );
 	}
 	else
 	{
